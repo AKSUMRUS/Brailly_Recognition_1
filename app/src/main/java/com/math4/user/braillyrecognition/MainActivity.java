@@ -175,7 +175,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
         }
         catch (Exception e)
         {
-
+            
         }
 
         // после того, как снимок сделан, показ превью отключается. необходимо включить его
