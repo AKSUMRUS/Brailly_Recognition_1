@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -38,7 +39,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
         super.onCreate(savedInstanceState);
 
         // если хотим, чтобы приложение постоянно имело портретную ориентацию
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // если хотим, чтобы приложение было полноэкранным
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -49,15 +50,14 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
         setContentView(R.layout.activity_main);
 
         // наше SurfaceView имеет имя SurfaceView01
-        preview = (SurfaceView) findViewById(R.id.SurfaceView01);
+        preview = findViewById(R.id.SurfaceView01);
 
         surfaceHolder = preview.getHolder();
         surfaceHolder.addCallback(this);
         surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // кнопка имеет имя Button01
-        shotBtn = (Button) findViewById(R.id.Button01);
-        shotBtn.setText("Shot");
+        shotBtn = findViewById(R.id.Button01);
         shotBtn.setOnClickListener(this);
     }
 
@@ -123,7 +123,6 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
             camera.setDisplayOrientation(90);
             lp.height = previewSurfaceHeight;
             lp.width = (int) (previewSurfaceHeight / aspect);
-            ;
         }
         else
         {
@@ -163,19 +162,20 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback, Vi
 
         try
         {
-            File saveDir = new File("/sdcard/CameraExample/");
+            File saveDir = new File(Environment.getExternalStorageDirectory().getPath());
 
             if (!saveDir.exists())
             {
                 saveDir.mkdirs();
             }
 
-            FileOutputStream os = new FileOutputStream(String.format("/sdcard/CameraExample/%d.jpg", System.currentTimeMillis()));
+            FileOutputStream os = new FileOutputStream(String.format(Environment.getExternalStorageDirectory().getPath(), System.currentTimeMillis()));
             os.write(paramArrayOfByte);
             os.close();
         }
         catch (Exception e)
         {
+
         }
 
         // после того, как снимок сделан, показ превью отключается. необходимо включить его
